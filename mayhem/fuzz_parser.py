@@ -31,7 +31,7 @@ def TestOneInput(data):
             ont = pronto.Ontology(handle=f)
             if should_conv:
                 ont.dumps()
-    except (UnicodeDecodeError, ValueError):
+    except (UnicodeDecodeError, ValueError, LookupError):
         return -1
     except TypeError as e:
         if 'is required' in str(e):
