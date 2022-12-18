@@ -26,11 +26,16 @@ with atheris.instrument_imports(include=["pronto"]):
 def TestOneInput(data):
     fdp = fuzz_helpers.EnhancedFuzzedDataProvider(data)
     should_conv = fdp.ConsumeBool()
+    rel_str = fdp.ConsumeRandomString() if fdp.ConsumeBool() else None
     try:
         with fdp.ConsumeMemoryFile(all_data=True, as_bytes=True) as f, nostdout():
             ont = pronto.Ontology(handle=f)
+            for term in ont.terms():
+                term.is_leaf()
             if should_conv:
                 ont.dumps()
+            if rel_str:
+                ont.create_relationship(rel_str)
     except (UnicodeDecodeError, ValueError, LookupError):
         return -1
     except TypeError as e:
