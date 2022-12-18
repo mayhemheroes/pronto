@@ -19,7 +19,7 @@ def nostdout():
     sys.stdout = save_stdout
     sys.stderr = save_stderr
 
-with atheris.instrument_imports(include=["pronto"]):
+with atheris.instrument_imports(include=['pronto', 'ast', 'uu']):
     import pronto
     warnings.filterwarnings("ignore", category=pronto.warnings.ProntoWarning)
 
@@ -36,7 +36,7 @@ def TestOneInput(data):
                 ont.dumps()
             if rel_str:
                 ont.create_relationship(rel_str)
-    except (UnicodeDecodeError, ValueError, LookupError):
+    except (UnicodeDecodeError, ValueError, LookupError, SyntaxError):
         return -1
     except TypeError as e:
         if 'is required' in str(e):
